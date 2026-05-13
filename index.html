@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>코지픽스튜디오 | 프로필 전문 스튜디오</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans KR', -apple-system, sans-serif;
+  color: #222; background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ===== NAV ===== */
+/* 브랜드 컬러: 로고 배경의 크림/버터 톤 */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 48px; height: 60px;
+  background: #faf3c9; backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.nav-logo { font-size: 15px; font-weight: 600; color: #3a3a3a; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { color: #4a4a4a; font-size: 13px; font-weight: 400; transition: color 0.3s; }
+.nav-links a:hover { color: #000; }
+
+/* ===== HERO CAROUSEL (Center Mode) ===== */
+.hero {
+  background: #1a1a1a;
+  padding: 80px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero-text {
+  text-align: center; padding: 40px 24px 28px;
+}
+.hero-logo { display: flex; justify-content: center; margin-bottom: 24px; }
+.hero-logo img { width: 280px; max-width: 70vw; height: auto; display: block; }
+.hero-text p { font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; margin-bottom: 24px; line-height: 1.85; }
+.hero-btns { display: flex; gap: 12px; justify-content: center; }
+.hero-btns .btn {
+  padding: 11px 26px; border-radius: 4px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; border: none; display: inline-block;
+}
+.btn-primary { background: #f5c518; color: #222; }
+.btn-primary:hover { background: #e6b800; }
+.btn-secondary {
+  background: rgba(255,255,255,0.1); color: #fff;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+/* Carousel track */
+.carousel-wrapper {
+  position: relative;
+  padding: 36px 0 48px;
+  overflow: hidden;
+  cursor: grab;
+}
+.carousel-wrapper:active { cursor: grabbing; }
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.carousel-track.dragging { transition: none; }
+.carousel-item {
+  flex: 0 0 auto;
+  padding: 0 8px;
+  transition: opacity 0.5s, filter 0.5s, transform 0.5s;
+}
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  pointer-events: none;
+}
+/* Side items are darker */
+.carousel-item.side {
+  opacity: 0.4;
+  filter: brightness(0.5);
+  transform: scale(0.92);
+}
+.carousel-item.center {
+  opacity: 1;
+  filter: brightness(1);
+  transform: scale(1);
+}
+
+/* Arrows */
+.hero-arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; z-index: 10;
+}
+.hero-arrow:hover { background: rgba(255,255,255,0.18); }
+.hero-arrow.prev { left: 20px; }
+.hero-arrow.next { right: 20px; }
+
+/* Dots */
+.hero-dots {
+  display: flex; justify-content: center; gap: 8px;
+  padding-bottom: 32px;
+}
+.hero-dots .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s;
+}
+.hero-dots .dot.active { background: #fff; transform: scale(1.2); }
+
+/* ===== SECTIONS ===== */
+.section-white { background: #fff; padding: 80px 0; }
+.section-title { font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 12px; color: #222; }
+.section-subtitle { font-size: 14px; font-weight: 300; text-align: center; color: #888; margin-bottom: 48px; line-height: 1.8; }
+
+/* ===== ABOUT ===== */
+.about-text { max-width: 640px; margin: 0 auto; text-align: center; padding: 0 24px; }
+.about-text h2 { font-size: 24px; font-weight: 600; margin-bottom: 20px; }
+.about-text p { font-size: 14px; line-height: 2; color: #666; font-weight: 300; }
+.about-text .about-emphasis {
+  margin-top: 24px; font-size: 15px; font-weight: 500; color: #333; line-height: 1.85;
+}
+.features { display: flex; justify-content: center; gap: 48px; margin-top: 56px; flex-wrap: wrap; padding: 0 24px; }
+.feature-item { text-align: center; max-width: 240px; }
+.feature-icon {
+  width: 52px; height: 52px; background: #f5f5f5; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.feature-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #222; }
+.feature-item .feature-tagline {
+  font-size: 13px; color: #444; font-weight: 500; line-height: 1.6; margin-bottom: 10px;
+}
+.feature-item p { font-size: 12px; color: #999; font-weight: 300; line-height: 1.7; }
+
+/* ===== PORTFOLIO ===== */
+.portfolio-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 36px; }
+.tab-btn {
+  padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; border: 1px solid #ddd; background: #fff; color: #666;
+}
+.tab-btn.active { background: #222; color: #fff; border-color: #222; }
+.tab-btn:hover:not(.active) { border-color: #999; }
+
+/* Concept-card layout (one card per concept group) */
+.portfolio-concepts {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 18px; max-width: 1040px; margin: 0 auto; padding: 0 24px;
+}
+/* 2-col variant — used when there are only 2 cards (e.g. 커머셜) */
+.portfolio-concepts.two-col {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 720px;
+}
+/* 1-card variant — used when there is only 1 card (e.g. 커머셜=뷰티) */
+.portfolio-concepts.single {
+  grid-template-columns: 1fr;
+  max-width: 380px;
+}
+.concept-card {
+  position: relative; aspect-ratio: 4/5; overflow: hidden;
+  border-radius: 8px; cursor: pointer; background: #f5f5f5;
+}
+.concept-card img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.concept-card:hover img { transform: scale(1.05); }
+.concept-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0.05) 55%, transparent);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 20px 22px; color: #fff;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.concept-card:hover .concept-overlay { opacity: 1; }
+.concept-overlay h3 { font-size: 16px; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 4px; }
+.concept-overlay span { font-size: 12px; font-weight: 300; opacity: 0.85; }
+.concept-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+  color: #fff; font-size: 11px; font-weight: 400;
+  padding: 5px 10px; border-radius: 12px; letter-spacing: 0.3px;
+}
+.placeholder-card {
+  position: relative; aspect-ratio: 4/5;
+  background: #f0f0f0; border: 1px dashed #d8d8d8; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.placeholder-card img {
+  width: 100%; height: 100%; object-fit: cover; opacity: 0.65;
+  filter: grayscale(0.2);
+}
+.placeholder-card .ph-tag {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255,255,255,0.85); color: #888;
+  font-size: 11px; font-weight: 400; padding: 5px 10px; border-radius: 12px;
+}
+
+/* ===== CONTACT ===== */
+.contact-section { background: #f5f5f5; padding: 80px 24px; }
+.contact-cards { display: flex; justify-content: center; gap: 20px; max-width: 1040px; margin: 0 auto 40px; flex-wrap: wrap; }
+.contact-card {
+  flex: 1; min-width: 240px; max-width: 320px;
+  background: #fff; border-radius: 12px; padding: 32px 24px; text-align: center;
+  border: 1px solid #eee; transition: box-shadow 0.3s;
+}
+.contact-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.contact-card-icon {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.kakao-icon { background: #fee500; }
+.insta-icon { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.naver-icon { background: #03C75A; }
+.contact-meta { text-align: center; margin: -16px auto 32px; max-width: 700px; }
+.contact-meta a { display: inline-block; color: #555; font-size: 13px; font-weight: 400; margin: 0 10px; transition: color 0.2s; }
+.contact-meta a:hover { color: #222; }
+.contact-meta .sep { color: #ccc; font-size: 12px; }
+.contact-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.contact-card p { font-size: 12px; color: #999; font-weight: 300; margin-bottom: 12px; }
+.contact-card .card-link { font-size: 12px; color: #555; font-weight: 500; }
+.contact-card .card-link:hover { color: #222; }
+.info-box {
+  max-width: 700px; margin: 0 auto; background: #fff; border-radius: 12px;
+  padding: 28px 32px; text-align: center; border: 1px solid #eee;
+}
+.info-box h4 { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+.info-box p { font-size: 13px; color: #777; font-weight: 300; line-height: 2; }
+
+/* ===== FOOTER ===== */
+footer { text-align: center; padding: 32px 24px; background: #fff; border-top: 1px solid #eee; }
+footer p { font-size: 12px; color: #bbb; font-weight: 300; }
+
+/* ===== LIGHTBOX (Slide Carousel) ===== */
+.lightbox {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.95); z-index: 200;
+  overflow: hidden;
+}
+.lightbox.active { display: block; }
+.lb-viewport {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: flex-start;
+  overflow: hidden;
+  cursor: grab;
+}
+.lb-viewport:active { cursor: grabbing; }
+.lb-track {
+  display: flex; align-items: center;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.lb-track.dragging { transition: none; }
+.lb-slide {
+  flex: 0 0 auto;
+  height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 12px;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.lb-slide img {
+  max-width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 4px;
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+.lb-slide.side { opacity: 0.25; transform: scale(0.9); }
+.lb-slide.center { opacity: 1; transform: scale(1); }
+.lb-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; font-size: 22px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; z-index: 210; user-select: none;
+}
+.lb-arrow:hover { background: rgba(255,255,255,0.2); }
+.lb-arrow.lb-prev { left: 24px; }
+.lb-arrow.lb-next { right: 24px; }
+.lb-close {
+  position: absolute; top: 18px; right: 20px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; z-index: 210;
+}
+.lb-close:hover { background: rgba(255,255,255,0.2); }
+.lb-counter {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 300; z-index: 210;
+  background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 20px;
+}
+.lb-dots {
+  position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 210;
+}
+.lb-dots .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); cursor: pointer; transition: all 0.3s;
+}
+.lb-dots .dot.active { background: #fff; transform: scale(1.3); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero-logo img { width: 200px; }
+  .hero-text p { font-size: 12px; }
+  .hero-arrow { width: 36px; height: 36px; font-size: 16px; }
+  .hero-arrow.prev { left: 8px; }
+  .hero-arrow.next { right: 8px; }
+  .features { gap: 32px; }
+  .portfolio-concepts { grid-template-columns: 1fr; gap: 14px; max-width: 380px; }
+  .contact-cards { flex-direction: column; align-items: center; }
+  .info-box { margin: 0 16px; }
+  .lb-arrow { width: 40px; height: 40px; font-size: 18px; }
+  .lb-arrow.lb-prev { left: 8px; }
+  .lb-arrow.lb-next { right: 8px; }
+  .lb-slide img { max-height: 82vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">코지픽스튜디오</a>
+  <ul class="nav-links">
+    <li><a href="#about">소개</a></li>
+    <li><a href="#portfolio">포트폴리오</a></li>
+    <li><a href="#contact">문의 및 예약</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-logo">
+      <img src="images/logo/logo2.png" alt="cozipic">
+    </div>
+    <p>원하는 이미지를, 정확하게 만듭니다<br>모든 사진촬영을 결과로 완성합니다</p>
+    <div class="hero-btns">
+      <a href="https://pf.kakao.com/_bwWwn" target="_blank" rel="noopener" class="btn btn-primary">카카오톡 예약</a>
+      <a href="https://www.instagram.com/cozipic_studio/" target="_blank" rel="noopener" class="btn btn-secondary">인스타그램</a>
+    </div>
+  </div>
+
+  <div class="carousel-wrapper" id="carouselWrapper">
+    <div class="carousel-track" id="carouselTrack">
+      <!-- 사진가가 골라준 1.jpg(서브폴더 대표컷)들로 큐레이션 -->
+      <div class="carousel-item"><img src="images/무용/1/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/뷰티_2/14/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/프로필_w_1/11/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/무용/3/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/뷰티_2/10/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/프로필_m/4/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/프로필_w_2/12/1.jpg" alt=""></div>
+      <div class="carousel-item"><img src="images/뷰티/1/1.jpg" alt=""></div>
+    </div>
+    <button class="hero-arrow prev" id="heroPrev">&#8249;</button>
+    <button class="hero-arrow next" id="heroNext">&#8250;</button>
+  </div>
+
+  <div class="hero-dots" id="heroDots"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-white" id="about">
+  <div class="about-text">
+    <h2>결과로 완성되는 프로필 촬영</h2>
+    <p>
+      프로필 촬영은 단순히 잘 찍는 것이 아니라,<br>
+      어떤 이미지를 보여줄지 정리하는 과정입니다.<br>
+      코지픽스튜디오는 촬영 전 상담을 통해 방향을 구체화하고,<br>
+      포즈·표정·시선까지 디테일하게 디렉팅하여<br>
+      의도한 결과로 이어지게 만듭니다.
+    </p>
+    <p class="about-emphasis">
+      촬영의 목적에 맞는 이미지를<br>
+      정확하게 결과로 만들어드립니다
+    </p>
+  </div>
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <h4>촬영 세팅</h4>
+      <p class="feature-tagline">개개인에 맞는 조명 세팅으로<br>결과를 만듭니다</p>
+      <p>빛과 톤을 의도에 맞게 설계해<br>원하는 분위기를 정확하게 구현합니다</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h4>디렉팅</h4>
+      <p class="feature-tagline">원하는 무드에 맞게<br>자연스럽게 이끌어냅니다</p>
+      <p>첫 촬영이어도 부담 없이 따라올 수 있도록<br>포즈, 표정, 시선의 흐름까지 디테일하게 디렉팅합니다</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <h4>리터칭</h4>
+      <p class="feature-tagline">원하는 방향에 맞춰<br>완성도를 높입니다</p>
+      <p>필요한 부분부터 정확하게 다듬어<br>자연스러움은 유지하면서 결과를 완성합니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section-white" id="portfolio" style="padding-top: 40px;">
+  <h2 class="section-title">포트폴리오</h2>
+  <p class="section-subtitle">코지픽스튜디오의 다양한 촬영 작업물을 확인해보세요</p>
+  <div class="portfolio-tabs" id="portfolioTabs"></div>
+  <div id="portfolioGrids"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <h2 class="section-title">문의 및 예약</h2>
+  <p class="section-subtitle">촬영 문의 및 예약은 카카오채널 또는 인스타그램 DM으로 연락주세요</p>
+  <div class="contact-meta">
+    <a href="tel:0507-1385-4037">0507-1385-4037</a>
+    <span class="sep">|</span>
+    <a href="mailto:cozipic_studio@naver.com">cozipic_studio@naver.com</a>
+  </div>
+  <div class="contact-cards">
+    <a href="https://pf.kakao.com/_bwWwn" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-card-icon kakao-icon">
+        <svg width="28" height="28" viewBox="0 0 256 256"><path fill="#3C1E1E" d="M128 36C70.6 36 24 72.7 24 117.8c0 29.2 19.3 54.9 48.5 69.5l-9.8 36.2c-.9 3.2 2.8 5.8 5.6 3.9l43.1-28.6c5.4.7 10.9 1.1 16.6 1.1c57.4 0 104-36.7 104-81.8S185.4 36 128 36z"/></svg>
+      </div>
+      <h4>카카오톡 채널</h4>
+      <p>편하게 문의해주세요</p>
+      <span class="card-link">채널 시작하기 &rarr;</span>
+    </a>
+    <a href="https://www.instagram.com/cozipic_studio/" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-card-icon insta-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </div>
+      <h4>Instagram</h4>
+      <p>작업 사진 더 보기</p>
+      <span class="card-link">팔로우하기 &rarr;</span>
+    </a>
+    <a href="https://map.naver.com/p/entry/place/1242965767?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202605111705&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0185260&lat=37.5128249&c=15.00,0,0,0,dh" target="_blank" rel="noopener" class="contact-card">
+      <div class="contact-card-icon naver-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h4>네이버 지도</h4>
+      <p>오시는 길 확인</p>
+      <span class="card-link">지도 보기 &rarr;</span>
+    </a>
+  </div>
+  <div class="info-box">
+    <h4>운영 정보</h4>
+    <p>
+      영업시간: 10:00 - 19:00 (100% 예약제 운영)<br>
+      위치: 서울시 서초구 강남대로93길 31-4 환명빌딩 B1 (잠원동 36-2)<br>
+      주차: 건물 내 지상 1층 1대 주차 가능<br>
+      입장: 건물 정면 기준 좌측 지하 전용 계단으로 내려오시면 됩니다 (지하 1층)
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 코지픽스튜디오. All rights reserved.</p>
+</footer>
+
+<!-- LIGHTBOX (Slide Carousel) -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">&times;</button>
+  <div class="lb-viewport" id="lbViewport">
+    <div class="lb-track" id="lbTrack"></div>
+  </div>
+  <button class="lb-arrow lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <button class="lb-arrow lb-next" onclick="lbNav(1)">&#8250;</button>
+  <div class="lb-dots" id="lbDots"></div>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<script>
+// ===== CENTER-MODE INFINITE CAROUSEL =====
+const track = document.getElementById('carouselTrack');
+const wrapper = document.getElementById('carouselWrapper');
+const dotsContainer = document.getElementById('heroDots');
+
+// 무한 루프: 원본 양옆으로 복제본을 붙여서 [clones][originals][clones] 구조로 만듦.
+// 경계에 도달하면 트랜지션 끝난 뒤 원본 위치로 몰래 순간이동 (teleport).
+const originalHTML = track.innerHTML;
+track.insertAdjacentHTML('afterbegin', originalHTML);
+track.insertAdjacentHTML('beforeend', originalHTML);
+
+const items = track.querySelectorAll('.carousel-item');
+const N = items.length / 3;           // 원본 이미지 개수
+let activeIndex = N;                  // 첫 번째 원본에서 시작
+let itemWidth, sideOffset;
+let isDragging = false, startX, dragOffset = 0, currentTranslate = 0;
+let autoTimer;
+
+function calcSizes() {
+  const ww = wrapper.offsetWidth;
+  itemWidth = Math.round(ww * 0.4);
+  items.forEach(item => {
+    item.style.width = itemWidth + 'px';
+    item.style.height = Math.round(itemWidth * 1.2) + 'px';
+  });
+  sideOffset = (ww - itemWidth) / 2;
+}
+
+function realIndex() {
+  return ((activeIndex - N) % N + N) % N;
+}
+
+function updateClasses() {
+  items.forEach((item, i) => {
+    item.classList.toggle('center', i === activeIndex);
+    item.classList.toggle('side', i !== activeIndex);
+  });
+  const ri = realIndex();
+  document.querySelectorAll('.hero-dots .dot').forEach((d, i) => {
+    d.classList.toggle('active', i === ri);
+  });
+}
+
+function applyTransform(animate) {
+  const x = sideOffset - activeIndex * itemWidth;
+  currentTranslate = x;
+  track.style.transition = animate ? 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+  track.style.transform = `translateX(${x}px)`;
+}
+
+function goTo(idx, animate = true) {
+  activeIndex = idx;
+  applyTransform(animate);
+  updateClasses();
+  resetAuto();
+}
+
+// 트랜지션 종료 후 클론 영역에 있으면 원본 영역으로 몰래 점프
+// 중요: 자식 item(opacity/filter/transform)에서 버블링되는 이벤트는 무시하고
+// 트랙 자신의 transform 트랜지션이 끝났을 때만 처리한다.
+// 그리고 순간이동 후에는 updateClasses()로 클래스도 같이 옮겨줘야
+// 한바퀴 돌고 나서 중앙 이미지가 dim(.side) 상태로 남는 버그가 없어진다.
+track.addEventListener('transitionend', (e) => {
+  if (e.target !== track || e.propertyName !== 'transform') return;
+  if (activeIndex < N) {
+    activeIndex += N;
+    applyTransform(false);
+    updateClasses();
+  } else if (activeIndex >= 2 * N) {
+    activeIndex -= N;
+    applyTransform(false);
+    updateClasses();
+  }
+});
+
+function resetAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(activeIndex + 1), 5000);
+}
+
+// Create dots (원본 개수만큼만)
+for (let i = 0; i < N; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => goTo(N + i);
+  dotsContainer.appendChild(dot);
+}
+
+// Arrows
+document.getElementById('heroPrev').onclick = () => goTo(activeIndex - 1);
+document.getElementById('heroNext').onclick = () => goTo(activeIndex + 1);
+
+// Init
+calcSizes();
+goTo(N, false);
+window.addEventListener('resize', () => { calcSizes(); goTo(activeIndex, false); });
+
+// ===== DRAG / TOUCH =====
+function dragStart(x) {
+  isDragging = true;
+  startX = x;
+  dragOffset = 0;
+  track.classList.add('dragging');
+  clearInterval(autoTimer);
+}
+function dragMove(x) {
+  if (!isDragging) return;
+  dragOffset = x - startX;
+  track.style.transform = `translateX(${currentTranslate + dragOffset}px)`;
+}
+function dragEnd() {
+  if (!isDragging) return;
+  isDragging = false;
+  track.classList.remove('dragging');
+  const threshold = itemWidth * 0.2;
+  if (dragOffset < -threshold) {
+    goTo(activeIndex + 1);
+  } else if (dragOffset > threshold) {
+    goTo(activeIndex - 1);
+  } else {
+    goTo(activeIndex);
+  }
+}
+
+// Mouse events
+wrapper.addEventListener('mousedown', e => { e.preventDefault(); dragStart(e.clientX); });
+window.addEventListener('mousemove', e => dragMove(e.clientX));
+window.addEventListener('mouseup', dragEnd);
+
+// Touch events
+wrapper.addEventListener('touchstart', e => dragStart(e.touches[0].clientX), { passive: true });
+wrapper.addEventListener('touchmove', e => dragMove(e.touches[0].clientX), { passive: true });
+wrapper.addEventListener('touchend', dragEnd);
+
+// ===== PORTFOLIO (4 tabs, subfolder cards) =====
+const CATEGORIES = [
+  {
+    key: "profile_m",
+    label: "남자 프로필",
+    shoots: [
+      {
+        id: "pm_1",
+        folder: "images/프로필_m/1",
+        files: [
+          "images/프로필_m/1/1.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0025_in.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0038_in.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0097_in.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0109_in.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0152_in.jpg",
+          "images/프로필_m/1/260205 c2_sp_w_h_0173_in.jpg",
+        ],
+      },
+      {
+        id: "pm_2",
+        folder: "images/프로필_m/2",
+        files: [
+          "images/프로필_m/2/1.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0225_in.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0257_in.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0284_in.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0316_in.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0354_in.jpg",
+          "images/프로필_m/2/260205 c2_sp_w_h_0368_in.jpg",
+        ],
+      },
+      {
+        id: "pm_3",
+        folder: "images/프로필_m/3",
+        files: [
+          "images/프로필_m/3/1.jpg",
+          "images/프로필_m/3/251123 c2_sample_w_h_0126_(bw)_in.jpg",
+          "images/프로필_m/3/251123 c2_sample_w_h_0133_(bw)_in.jpg",
+        ],
+      },
+      {
+        id: "pm_4",
+        folder: "images/프로필_m/4",
+        files: [
+          "images/프로필_m/4/1.jpg",
+          "images/프로필_m/4/250829 c3_leaders_w_h_0087_in.jpg",
+          "images/프로필_m/4/250829 c3_leaders_w_h_0101_4_in.jpg",
+          "images/프로필_m/4/250829 c3_leaders_w_h_0140_2_in.jpg",
+          "images/프로필_m/4/250829 c3_leaders_w_h_0189_in.jpg",
+          "images/프로필_m/4/250829 c3_leaders_w_h_0216_in.jpg",
+        ],
+      },
+      {
+        id: "pm_5",
+        folder: "images/프로필_m/5",
+        files: [
+          "images/프로필_m/5/1.jpg",
+          "images/프로필_m/5/250529 p1_sample_w_h_0052 1_re_in.jpg",
+          "images/프로필_m/5/250529 p1_sample_w_h_0067 1_in.jpg",
+          "images/프로필_m/5/250529 p1_sample_w_h_0102 1_in.jpg",
+        ],
+      },
+      {
+        id: "pm_6",
+        folder: "images/프로필_m/6",
+        files: [
+          "images/프로필_m/6/1.jpg",
+          "images/프로필_m/6/250501 p1_sample_w_h_0025 1_in.jpg",
+          "images/프로필_m/6/250501 p1_sample_w_h_0044 1_in.jpg",
+          "images/프로필_m/6/250501 p1_sample_w_h_0125 1_in.jpg",
+        ],
+      },
+    ],
+  },
+  {
+    key: "profile_w",
+    label: "여자 프로필",
+    shoots: [
+      {
+        id: "pw_1_1",
+        folder: "images/프로필_w_1/1",
+        files: [
+          "images/프로필_w_1/1/1.jpg",
+          "images/프로필_w_1/1/260210 c1_sp_w_h_0273_.jpg",
+          "images/프로필_w_1/1/260210 c1_sp_w_h_0319_.jpg",
+          "images/프로필_w_1/1/260210 c1_sp_w_h_0327_.jpg",
+          "images/프로필_w_1/1/260210 c1_sp_w_h_0340_.jpg",
+        ],
+      },
+      {
+        id: "pw_1_2",
+        folder: "images/프로필_w_1/2",
+        files: [
+          "images/프로필_w_1/2/1.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0258_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0288_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0340_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0379_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0393_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0422_in.jpg",
+          "images/프로필_w_1/2/260221 c3_sp_w_h_0462_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_3",
+        folder: "images/프로필_w_1/3",
+        files: [
+          "images/프로필_w_1/3/1.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0210_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0221_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0228_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0273_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0288_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0308_2_in.jpg",
+          "images/프로필_w_1/3/260118 c3_sp_w_h_0308_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_4",
+        folder: "images/프로필_w_1/4",
+        files: [
+          "images/프로필_w_1/4/1.jpg",
+          "images/프로필_w_1/4/260118 c3_sp_w_h_0369_in.jpg",
+          "images/프로필_w_1/4/260118 c3_sp_w_h_0428_in.jpg",
+          "images/프로필_w_1/4/260118 c3_sp_w_h_0443_in.jpg",
+          "images/프로필_w_1/4/260118 c3_sp_w_h_0476_in.jpg",
+          "images/프로필_w_1/4/260118 c3_sp_w_h_0497_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_5",
+        folder: "images/프로필_w_1/5",
+        files: [
+          "images/프로필_w_1/5/1.jpg",
+          "images/프로필_w_1/5/251214 c2_sample_w_h_0001_2_in.jpg",
+          "images/프로필_w_1/5/251214 c2_sample_w_h_0059_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_6",
+        folder: "images/프로필_w_1/6",
+        files: [
+          "images/프로필_w_1/6/1.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0134 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0253 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0295 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0313 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0349 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0396 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0426 1_in.jpg",
+          "images/프로필_w_1/6/251011 c1_sample_w_h_0432 1_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_7",
+        folder: "images/프로필_w_1/7",
+        files: [
+          "images/프로필_w_1/7/1.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0082_in.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0120_in.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0192_in.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0212_in.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0261_in.jpg",
+          "images/프로필_w_1/7/251011 c1_sample_w_h_0266_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_8",
+        folder: "images/프로필_w_1/8",
+        files: [
+          "images/프로필_w_1/8/1.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0348_in.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0362_in.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0391_in.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0395_in.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0420_in.jpg",
+          "images/프로필_w_1/8/251023 c3_leaders_w_h_0443_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_9",
+        folder: "images/프로필_w_1/9",
+        files: [
+          "images/프로필_w_1/9/1.jpg",
+          "images/프로필_w_1/9/250914 c2_sample_w_h_0316_in.jpg",
+          "images/프로필_w_1/9/250914 c2_sample_w_h_0320_in.jpg",
+          "images/프로필_w_1/9/250914 c2_sample_w_h_0327_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_10",
+        folder: "images/프로필_w_1/10",
+        files: [
+          "images/프로필_w_1/10/1.jpg",
+          "images/프로필_w_1/10/250824 c2_sample_w_h_0364_in.jpg",
+          "images/프로필_w_1/10/250824 c2_sample_w_h_0400_in.jpg",
+          "images/프로필_w_1/10/250824 c2_sample_w_h_0449_in.jpg",
+          "images/프로필_w_1/10/250824 c2_sample_w_h_0464_in.jpg",
+        ],
+      },
+      {
+        id: "pw_1_11",
+        folder: "images/프로필_w_1/11",
+        files: [
+          "images/프로필_w_1/11/1.jpg",
+          "images/프로필_w_1/11/250825 c1_leaders_w_h_0057_re_in.jpg",
+          "images/프로필_w_1/11/250825 c1_leaders_w_h_0129_re_in.jpg",
+          "images/프로필_w_1/11/250825 c1_leaders_w_h_0227_re_in.jpg",
+          "images/프로필_w_1/11/250825 c1_leaders_w_h_0251_re_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_12",
+        folder: "images/프로필_w_2/12",
+        files: [
+          "images/프로필_w_2/12/1.jpg",
+          "images/프로필_w_2/12/250828 c2_leaders_w_h_0374_in.jpg",
+          "images/프로필_w_2/12/250828 c2_leaders_w_h_0406_in.jpg",
+          "images/프로필_w_2/12/250828 c2_leaders_w_h_0416_in.jpg",
+          "images/프로필_w_2/12/250828 c2_leaders_w_h_0450_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_13",
+        folder: "images/프로필_w_2/13",
+        files: [
+          "images/프로필_w_2/13/1.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0077_in.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0093_in.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0110_in.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0138_in.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0155_in.jpg",
+          "images/프로필_w_2/13/250828 c2_leaders_w_h_0222_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_14",
+        folder: "images/프로필_w_2/14",
+        files: [
+          "images/프로필_w_2/14/1.jpg",
+          "images/프로필_w_2/14/250829 c1_sample_w_h_0023_in.jpg",
+          "images/프로필_w_2/14/250829 c1_sample_w_h_0056_in.jpg",
+          "images/프로필_w_2/14/250829 c1_sample_w_h_0061_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_15",
+        folder: "images/프로필_w_2/15",
+        files: [
+          "images/프로필_w_2/15/1.jpg",
+          "images/프로필_w_2/15/250829 c1_sample_w_h_0196_in.jpg",
+          "images/프로필_w_2/15/250829 c1_sample_w_h_0251_in.jpg",
+          "images/프로필_w_2/15/250829 c1_sample_w_h_0262_in.jpg",
+          "images/프로필_w_2/15/250829 c1_sample_w_h_0280_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_16",
+        folder: "images/프로필_w_2/16",
+        files: [
+          "images/프로필_w_2/16/1.jpg",
+          "images/프로필_w_2/16/250710 c1_sample_w_h_0240 1_in.jpg",
+          "images/프로필_w_2/16/250710 c1_sample_w_h_0375_in.jpg",
+          "images/프로필_w_2/16/250710 c1_sample_w_h_0442_in.jpg",
+          "images/프로필_w_2/16/250710 c1_sample_w_h_0473_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_17",
+        folder: "images/프로필_w_2/17",
+        files: [
+          "images/프로필_w_2/17/1.jpg",
+          "images/프로필_w_2/17/250605 p1_sample_w_h_0036 1_in.jpg",
+          "images/프로필_w_2/17/250605 p1_sample_w_h_0059 1_in.jpg",
+          "images/프로필_w_2/17/250605 p1_sample_w_h_0112_in.jpg",
+          "images/프로필_w_2/17/250605 p1_sample_w_h_0250_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_18",
+        folder: "images/프로필_w_2/18",
+        files: [
+          "images/프로필_w_2/18/1.jpg",
+          "images/프로필_w_2/18/250519 p1_sample_w_h_0413_.jpg",
+          "images/프로필_w_2/18/250519 p1_sample_w_h_0428_.jpg",
+          "images/프로필_w_2/18/250519 p1_sample_w_h_0445_.jpg",
+          "images/프로필_w_2/18/250519 p1_sample_w_h_0522_.jpg",
+        ],
+      },
+      {
+        id: "pw_2_19",
+        folder: "images/프로필_w_2/19",
+        files: [
+          "images/프로필_w_2/19/1.jpg",
+          "images/프로필_w_2/19/250508 p1_sample_w_h_0138_.jpg",
+          "images/프로필_w_2/19/250508 p1_sample_w_h_0147_.jpg",
+          "images/프로필_w_2/19/250508 p1_sample_w_h_0156_.jpg",
+        ],
+      },
+      {
+        id: "pw_2_20",
+        folder: "images/프로필_w_2/20",
+        files: [
+          "images/프로필_w_2/20/1.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0127 1_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0160 1_re_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0216 1_re_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0259 1_re_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0277 1_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0321 1_in.jpg",
+          "images/프로필_w_2/20/250505 p1_sample_w_h_0330 1_in.jpg",
+        ],
+      },
+      {
+        id: "pw_2_21",
+        folder: "images/프로필_w_2/21",
+        files: [
+          "images/프로필_w_2/21/1.jpg",
+          "images/프로필_w_2/21/250410 p1_sample_w_h_0490_.jpg",
+          "images/프로필_w_2/21/250410 p1_sample_w_h_0517_.jpg",
+        ],
+      },
+    ],
+  },
+  {
+    key: "dance",
+    label: "무용 프로필",
+    shoots: [
+      {
+        id: "dn_1",
+        folder: "images/무용/1",
+        files: [
+          "images/무용/1/1.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0190_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0203_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0228_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0252_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0257_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0290_in.jpg",
+          "images/무용/1/260310 c1_sp_w_h_0309_in.jpg",
+        ],
+      },
+      {
+        id: "dn_2",
+        folder: "images/무용/2",
+        files: [
+          "images/무용/2/1.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0331_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0349_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0411_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0419_-.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0448_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0463_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0483_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0512_-.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0529_in.jpg",
+          "images/무용/2/260310 c1_sp_w_h_0545_-.jpg",
+        ],
+      },
+      {
+        id: "dn_3",
+        folder: "images/무용/3",
+        files: [
+          "images/무용/3/1.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0389_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0455_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0479_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0507_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0531_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0570_in.jpg",
+          "images/무용/3/260313 c1_sp_w_h_0588_in.jpg",
+        ],
+      },
+      {
+        id: "dn_4",
+        folder: "images/무용/4",
+        files: [
+          "images/무용/4/1.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0069 1_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0085 1_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0127 1_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0142 1_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0176 1_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0223_in.jpg",
+          "images/무용/4/260327 c2_sp_w_h_0264_in.jpg",
+        ],
+      },
+      {
+        id: "dn_5",
+        folder: "images/무용/5",
+        files: [
+          "images/무용/5/1.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0002_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0044 1_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0057 1_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0076 1_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0099 1_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0106 1_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0528_in.jpg",
+          "images/무용/5/260221 c3_sp_w_h_0567_in.jpg",
+        ],
+      },
+    ],
+  },
+  {
+    key: "commercial",
+    label: "커머셜",
+    shoots: [
+      {
+        id: "bt_1",
+        folder: "images/뷰티/1",
+        files: [
+          "images/뷰티/1/1.jpg",
+          "images/뷰티/1/260210 c1_sp_w_h_0071_in.jpg",
+          "images/뷰티/1/260210 c1_sp_w_h_0096_in.jpg",
+          "images/뷰티/1/260210 c1_sp_w_h_0113_in.jpg",
+          "images/뷰티/1/260210 c1_sp_w_h_0149_in.jpg",
+          "images/뷰티/1/260210 c1_sp_w_h_0185_in.jpg",
+        ],
+      },
+      {
+        id: "bt_2",
+        folder: "images/뷰티/2",
+        files: [
+          "images/뷰티/2/1.jpg",
+          "images/뷰티/2/260118 c3_sp_w_h_0509_in.jpg",
+          "images/뷰티/2/260118 c3_sp_w_h_0565_in.jpg",
+          "images/뷰티/2/260118 c3_sp_w_h_0598_in.jpg",
+          "images/뷰티/2/260118 c3_sp_w_h_0612_in.jpg",
+          "images/뷰티/2/260118 c3_sp_w_h_0628_in.jpg",
+        ],
+      },
+      {
+        id: "bt_3",
+        folder: "images/뷰티/3",
+        files: [
+          "images/뷰티/3/1.jpg",
+          "images/뷰티/3/251011 c1_sample_w_h_0041 1_4_in.jpg",
+          "images/뷰티/3/251011 c1_sample_w_h_0043 1_in.jpg",
+          "images/뷰티/3/251011 c1_sample_w_h_0084 2_in.jpg",
+          "images/뷰티/3/251011 c1_sample_w_h_0592_in.jpg",
+          "images/뷰티/3/251011 c1_sample_w_h_0633_in.jpg",
+        ],
+      },
+      {
+        id: "bt_4",
+        folder: "images/뷰티/4",
+        files: [
+          "images/뷰티/4/1.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0055 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0065 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0088 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0100 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0181 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0184 1_in.jpg",
+          "images/뷰티/4/251020 c1_sample_w_h_0641_in.jpg",
+        ],
+      },
+      {
+        id: "bt_5",
+        folder: "images/뷰티/5",
+        files: [
+          "images/뷰티/5/1.jpg",
+          "images/뷰티/5/251023 c3_leaders_w_h_0619_in.jpg",
+          "images/뷰티/5/251023 c3_leaders_w_h_0657_in.jpg",
+          "images/뷰티/5/251023 c3_leaders_w_h_0662_in.jpg",
+          "images/뷰티/5/251023 c3_leaders_w_h_0673_in.jpg",
+          "images/뷰티/5/251023 c3_leaders_w_h_0740_in.jpg",
+        ],
+      },
+      {
+        id: "bt_6",
+        folder: "images/뷰티/6",
+        files: [
+          "images/뷰티/6/1.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0009_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0016_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0788_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0807_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0882_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0899_in.jpg",
+          "images/뷰티/6/251023 c3_leaders_w_h_0970_in.jpg",
+        ],
+      },
+      {
+        id: "bt_7",
+        folder: "images/뷰티/7",
+        files: [
+          "images/뷰티/7/1.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0003 1_re_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0004 1_re_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0015 1_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0027 1_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0422_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0483_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0525_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0536_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0564_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0600 1_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0604 1_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0615 1_in.jpg",
+          "images/뷰티/7/251026 c4_sample_w_h_0682 1_in.jpg",
+        ],
+      },
+      {
+        id: "bt_8",
+        folder: "images/뷰티/8",
+        files: [
+          "images/뷰티/8/1.jpg",
+          "images/뷰티/8/250929 c1_sample_w_h_0087_in.jpg",
+          "images/뷰티/8/250929 c1_sample_w_h_0104_in.jpg",
+          "images/뷰티/8/250929 c1_sample_w_h_0142_in.jpg",
+          "images/뷰티/8/250929 c1_sample_w_h_0167_in.jpg",
+          "images/뷰티/8/250929 c1_sample_w_h_0222_in.jpg",
+        ],
+      },
+      {
+        id: "bt_9",
+        folder: "images/뷰티/9",
+        files: [
+          "images/뷰티/9/1.jpg",
+          "images/뷰티/9/250929 c1_sample_w_h_0247_in.jpg",
+          "images/뷰티/9/250929 c1_sample_w_h_0390_in.jpg",
+          "images/뷰티/9/250929 c1_sample_w_h_0403_in.jpg",
+          "images/뷰티/9/250929 c1_sample_w_h_0418_in.jpg",
+          "images/뷰티/9/250929 c1_sample_w_h_0500_in.jpg",
+        ],
+      },
+      {
+        id: "bt_10",
+        folder: "images/뷰티_2/10",
+        files: [
+          "images/뷰티_2/10/1.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0547_.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0614_.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0646_.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0666_.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0679_.jpg",
+          "images/뷰티_2/10/250929 c1_sample_w_h_0714_.jpg",
+        ],
+      },
+      {
+        id: "bt_11",
+        folder: "images/뷰티_2/11",
+        files: [
+          "images/뷰티_2/11/1.jpg",
+          "images/뷰티_2/11/250914 c2_sample_w_h_0365_in.jpg",
+          "images/뷰티_2/11/250914 c2_sample_w_h_0416_in.jpg",
+          "images/뷰티_2/11/250914 c2_sample_w_h_0453_in.jpg",
+          "images/뷰티_2/11/250914 c2_sample_w_h_0480_in.jpg",
+          "images/뷰티_2/11/250914 c2_sample_w_h_0523_in.jpg",
+        ],
+      },
+      {
+        id: "bt_12",
+        folder: "images/뷰티_2/12",
+        files: [
+          "images/뷰티_2/12/1.jpg",
+          "images/뷰티_2/12/250914 c2_sample_w_h_0025_in.jpg",
+          "images/뷰티_2/12/250914 c2_sample_w_h_0060_in.jpg",
+          "images/뷰티_2/12/250914 c2_sample_w_h_0100_in.jpg",
+          "images/뷰티_2/12/250914 c2_sample_w_h_0112_in.jpg",
+          "images/뷰티_2/12/250914 c2_sample_w_h_0114_in.jpg",
+        ],
+      },
+      {
+        id: "bt_13",
+        folder: "images/뷰티_2/13",
+        files: [
+          "images/뷰티_2/13/1.jpg",
+          "images/뷰티_2/13/250824 c2_sample_w_h_0194_in.jpg",
+          "images/뷰티_2/13/250824 c2_sample_w_h_0214_in.jpg",
+          "images/뷰티_2/13/250824 c2_sample_w_h_0253_in.jpg",
+          "images/뷰티_2/13/250824 c2_sample_w_h_0262_in.jpg",
+          "images/뷰티_2/13/250824 c2_sample_w_h_0290_in.jpg",
+        ],
+      },
+      {
+        id: "bt_14",
+        folder: "images/뷰티_2/14",
+        files: [
+          "images/뷰티_2/14/1.jpg",
+          "images/뷰티_2/14/250704 c3_sample_w_h_0040_in.jpg",
+          "images/뷰티_2/14/250704 c3_sample_w_h_0055_in.jpg",
+          "images/뷰티_2/14/250704 c3_sample_w_h_0075_in.jpg",
+          "images/뷰티_2/14/250704 c3_sample_w_h_0149_in.jpg",
+        ],
+      },
+      {
+        id: "bt_15",
+        folder: "images/뷰티_2/15",
+        files: [
+          "images/뷰티_2/15/1.jpg",
+          "images/뷰티_2/15/250704 c3_sample_w_h_0248_in.jpg",
+          "images/뷰티_2/15/250704 c3_sample_w_h_0305_in.jpg",
+          "images/뷰티_2/15/250704 c3_sample_w_h_0445 1_in.jpg",
+          "images/뷰티_2/15/250704 c3_sample_w_h_0516_in.jpg",
+        ],
+      },
+      {
+        id: "bt_16",
+        folder: "images/뷰티_2/16",
+        files: [
+          "images/뷰티_2/16/1.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0049_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0088_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0122_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0158_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0222_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0231_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0250_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0274_in.jpg",
+          "images/뷰티_2/16/250710 c1_sample_w_h_0311_in.jpg",
+        ],
+      },
+      {
+        id: "bt_17",
+        folder: "images/뷰티_2/17",
+        files: [
+          "images/뷰티_2/17/1.jpg",
+          "images/뷰티_2/17/250710 c1_sample_w_h_0014 1_in.jpg",
+          "images/뷰티_2/17/250710 c1_sample_w_h_0145 1_in.jpg",
+          "images/뷰티_2/17/250710 c1_sample_w_h_0169 1_in.jpg",
+          "images/뷰티_2/17/250710 c1_sample_w_h_0197 1_in.jpg",
+          "images/뷰티_2/17/250710 c1_sample_w_h_0214 4_in.jpg",
+        ],
+      },
+      {
+        id: "bt_18",
+        folder: "images/뷰티_2/18",
+        files: [
+          "images/뷰티_2/18/1.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0605_re_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0614_re_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0655_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0683_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0719_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0745_re_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0823_re_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0832_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0842_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0892_in.jpg",
+          "images/뷰티_2/18/250529 p2_sample_w_h_0911_in.jpg",
+        ],
+      },
+    ],
+  },
+];
+// 라이트박스가 사용하는 lookup: shootId -> files[]
+const CONCEPT_GROUPS = {};
+CATEGORIES.forEach(cat => {
+  cat.shoots.forEach(s => { CONCEPT_GROUPS[s.id] = s.files; });
+});
+
+function switchTab(btn, catKey) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.portfolio-concepts').forEach(g => {
+    g.style.display = g.dataset.cat === catKey ? 'grid' : 'none';
+  });
+}
+
+// 탭 / 카드를 CATEGORIES로부터 동적으로 그려준다.
+(function buildPortfolio() {
+  const tabsEl = document.getElementById('portfolioTabs');
+  const gridsEl = document.getElementById('portfolioGrids');
+  if (!tabsEl || !gridsEl) return;
+
+  CATEGORIES.forEach((cat, ci) => {
+    // 탭 버튼
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (ci === 0 ? ' active' : '');
+    btn.textContent = cat.label;
+    btn.addEventListener('click', () => switchTab(btn, cat.key));
+    tabsEl.appendChild(btn);
+
+    // 그리드
+    const grid = document.createElement('div');
+    grid.className = 'portfolio-concepts';
+    grid.dataset.cat = cat.key;
+    grid.style.display = ci === 0 ? 'grid' : 'none';
+
+    cat.shoots.forEach((s, si) => {
+      const card = document.createElement('div');
+      card.className = 'concept-card';
+      card.dataset.concept = s.id;
+
+      const img = document.createElement('img');
+      img.src = s.folder + '/1.jpg';
+      img.alt = '';
+      img.loading = 'lazy';
+      // 1.jpg가 없으면 첫번째 사진으로 폴백
+      img.onerror = function () {
+        this.onerror = null;
+        if (s.files && s.files.length) this.src = s.files[0];
+      };
+      card.appendChild(img);
+
+      const badge = document.createElement('div');
+      badge.className = 'concept-badge';
+      badge.textContent = s.files.length + '컷';
+      card.appendChild(badge);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'concept-overlay';
+      const num = String(si + 1).padStart(2, '0');
+      overlay.innerHTML = '<h3>' + cat.label + '</h3><span>SHOOT ' + num + '</span>';
+      card.appendChild(overlay);
+
+      card.addEventListener('click', () => openLightbox(s.id, null));
+      grid.appendChild(card);
+    });
+
+    gridsEl.appendChild(grid);
+  });
+})();
+
+
+// ===== LIGHTBOX (Slide Carousel with Concept Groups) =====
+
+const lb = document.getElementById('lightbox');
+const lbTrack = document.getElementById('lbTrack');
+const lbViewport = document.getElementById('lbViewport');
+const lbDotsContainer = document.getElementById('lbDots');
+const lbCounter = document.getElementById('lbCounter');
+
+let lbImages = [], lbIndex = 0;
+let lbItemWidth = 0, lbSideOffset = 0;
+let lbDragging = false, lbStartX = 0, lbDragOffset = 0, lbTranslate = 0;
+
+function openLightbox(concept, clickedSrc) {
+  const files = CONCEPT_GROUPS[concept];
+  if (!files || !files.length) return;
+  // CONCEPT_GROUPS의 값은 이미 'images/...' 전체 상대경로.
+  lbImages = files.slice();
+  // 카드 썸네일은 대표 이미지일 뿐이라, 라이트박스는 항상 첫 사진부터 시작.
+  lbIndex = 0;
+  renderLbTrack();
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => { calcLbSizes(); lbGoTo(lbIndex, false); });
+}
+
+function renderLbTrack() {
+  lbTrack.innerHTML = '';
+  lbDotsContainer.innerHTML = '';
+  lbImages.forEach((src, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'lb-slide';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    slide.appendChild(img);
+    lbTrack.appendChild(slide);
+
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.onclick = () => lbGoTo(i);
+    lbDotsContainer.appendChild(dot);
+  });
+}
+
+function calcLbSizes() {
+  const vw = lbViewport.offsetWidth;
+  // 뷰포트 너비 기준으로 슬라이드 크기 결정 (한 장이 거의 꽉 차게)
+  lbItemWidth = Math.round(Math.min(vw * 0.82, 900));
+  lbTrack.querySelectorAll('.lb-slide').forEach(s => {
+    s.style.width = lbItemWidth + 'px';
+  });
+  lbSideOffset = (vw - lbItemWidth) / 2;
+}
+
+function updateLbClasses() {
+  lbTrack.querySelectorAll('.lb-slide').forEach((s, i) => {
+    s.classList.toggle('center', i === lbIndex);
+    s.classList.toggle('side', i !== lbIndex);
+  });
+  lbDotsContainer.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === lbIndex);
+  });
+  lbCounter.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+}
+
+function lbGoTo(idx, animate = true) {
+  if (idx < 0) idx = lbImages.length - 1;
+  if (idx >= lbImages.length) idx = 0;
+  lbIndex = idx;
+  const x = lbSideOffset - lbIndex * lbItemWidth;
+  lbTranslate = x;
+  lbTrack.style.transition = animate ? 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+  lbTrack.style.transform = `translateX(${x}px)`;
+  updateLbClasses();
+}
+
+function lbNav(dir) { lbGoTo(lbIndex + dir); }
+
+function closeLightbox() {
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// 카드 click handler는 buildPortfolio()에서 카드 생성 시 직접 바인딩됨.
+
+// 배경 클릭으로 닫기 (이미지/화살표/닷 클릭은 제외)
+lb.addEventListener('click', function(e) {
+  if (e.target === lb || e.target === lbViewport || e.target === lbTrack) closeLightbox();
+});
+
+// 키보드 네비게이션
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
+
+// 드래그 / 터치 스와이프
+function lbDragStart(x) {
+  lbDragging = true;
+  lbStartX = x;
+  lbDragOffset = 0;
+  lbTrack.classList.add('dragging');
+}
+function lbDragMove(x) {
+  if (!lbDragging) return;
+  lbDragOffset = x - lbStartX;
+  lbTrack.style.transform = `translateX(${lbTranslate + lbDragOffset}px)`;
+}
+function lbDragEnd() {
+  if (!lbDragging) return;
+  lbDragging = false;
+  lbTrack.classList.remove('dragging');
+  const threshold = lbItemWidth * 0.15;
+  if (lbDragOffset < -threshold) lbGoTo(lbIndex + 1);
+  else if (lbDragOffset > threshold) lbGoTo(lbIndex - 1);
+  else lbGoTo(lbIndex);
+}
+lbViewport.addEventListener('mousedown', e => { e.preventDefault(); lbDragStart(e.clientX); });
+window.addEventListener('mousemove', e => lbDragMove(e.clientX));
+window.addEventListener('mouseup', lbDragEnd);
+lbViewport.addEventListener('touchstart', e => lbDragStart(e.touches[0].clientX), { passive: true });
+lbViewport.addEventListener('touchmove', e => lbDragMove(e.touches[0].clientX), { passive: true });
+lbViewport.addEventListener('touchend', lbDragEnd);
+
+// 리사이즈 대응
+window.addEventListener('resize', () => {
+  if (!lb.classList.contains('active')) return;
+  calcLbSizes();
+  lbGoTo(lbIndex, false);
+});
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('.nav-links a, .hero-btns .btn').forEach(a => {
+  if (a.getAttribute('href')?.startsWith('#')) {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+});
+</script>
+
+</body>
+</html>
